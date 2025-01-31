@@ -1,5 +1,4 @@
 import { Component,OnInit,AfterViewInit,ViewChild,ElementRef } from '@angular/core';
-// import { RouterOutlet } from '@angular/router';
 import * as GSAP from 'gsap';
 import * as THREE from 'three';
 
@@ -9,7 +8,6 @@ import { Tree } from './objects/Tree';
 import { Hedgehog } from './objects/Hedgehog';
 import { Carrot } from './objects/Carrot';
 import { BonusParticles } from './objects/BonusParticles';
-
 
 @Component({
   selector: 'app-root',
@@ -62,7 +60,6 @@ export class GameComponent implements OnInit, AfterViewInit{
   private malusClearAlpha = 0;
   private audio = new Audio('https://s3-us-west-2.amazonaws.com/s.cdpn.io/264161/Antonio-Vivaldi-Summer_01.mp3');
 
-
   private carrot: any;
   private obstacle: any;
   private floor: any; //new THREE.Group();
@@ -77,30 +74,13 @@ export class GameComponent implements OnInit, AfterViewInit{
   private windowHalfX: any;
   private windowHalfY: any;
   private mousePos = {
-      x: 0,
-      y: 0
+    x: 0,
+    y: 0
   };
 
   //3D OBJECTS VARIABLES
 
   private hero: any;
-
-  // Materials
-  // private greenMat = new THREE.MeshPhongMaterial({
-  //   color: 0x7abf8e,
-  //   shininess: 0,
-  //   // shading: THREE.FlatShading,
-  // });
-
-  // private skinMat = new THREE.MeshPhongMaterial({
-  // color: 0xff9ea5,
-  // // shading: THREE.FlatShading
-  // });
-
-
-  // OTHER VARIABLES
-
-  // private PI = Math.PI;
 
   constructor(
   ) { 
@@ -152,7 +132,6 @@ export class GameComponent implements OnInit, AfterViewInit{
     this.camera.position.y = 30;
     this.camera.lookAt(new THREE.Vector3(0, 30, 0));
 
-
     this.renderer = new THREE.WebGLRenderer({
       alpha: true,
       antialias: true
@@ -166,14 +145,11 @@ export class GameComponent implements OnInit, AfterViewInit{
 
     this.domContainer.nativeElement.appendChild(this.renderer.domElement);
 
-    window.addEventListener('resize', this.handleWindowResize, false);
-    document.addEventListener('mousedown', this.handleMouseDown, false);
-    document.addEventListener("touchend", this.handleMouseDown, false);
-
-    
+    window.addEventListener('resize', this.handleWindowResize.bind(this), false);
+    document.addEventListener('mousedown', this.handleMouseDown.bind(this), false);
+    document.addEventListener("touchend", this.handleMouseDown.bind(this), false);
 
     // this.controls.noPan = true;
-
 
     this.clock = new THREE.Clock();
   }
@@ -321,12 +297,13 @@ export class GameComponent implements OnInit, AfterViewInit{
     this.hero.nod();
     this.audio.play();
     this.updateLevel();
-    this.levelInterval = setInterval(this.updateLevel, this.levelUpdateFreq);
+    this.levelInterval = setInterval(() =>{ this.updateLevel(); }, this.levelUpdateFreq);
   }
   private loop = () => {  
     this.delta = this.clock.getDelta();
+    // console.log('this.delta >>>>>', this.delta);
     this.updateFloorRotation();
-
+    // console.log(this.gameStatus, this.hero.status);
     if (this.gameStatus == "play") {
 
       if (this.hero.status == "running") {
@@ -344,7 +321,10 @@ export class GameComponent implements OnInit, AfterViewInit{
   }
   private updateFloorRotation() {
     this.floorRotation += this.delta * .03 * this.speed;
+
     this.floorRotation = this.floorRotation % (Math.PI * 2);
+
+    // console.log(this.floorRotation, this.delta, this.speed);
     this.floor.rotation.z = this.floorRotation;
   }
 
@@ -374,7 +354,6 @@ export class GameComponent implements OnInit, AfterViewInit{
     this.obstacle.mesh.rotation.z = this.floorRotation + this.obstacle.angle - Math.PI / 2;
     this.obstacle.mesh.position.y = -this.floorRadius + Math.sin(this.floorRotation + this.obstacle.angle) * (this.floorRadius + 3);
     this.obstacle.mesh.position.x = Math.cos(this.floorRotation + this.obstacle.angle) * (this.floorRadius + 3);
-
   }
 
 
@@ -383,10 +362,12 @@ export class GameComponent implements OnInit, AfterViewInit{
     const dm = this.hero.mesh.position.clone().sub(this.obstacle.mesh.position.clone());
 
     if (db.length() < this.collisionBonus) {
+      console.log('get bonus');
       this.getBonus();
     }
 
     if (dm.length() < this.collisionObstacle && this.obstacle.status != "flying") {
+      console.log('get minus');
       this.getMalus();
     }
   }
@@ -439,13 +420,14 @@ export class GameComponent implements OnInit, AfterViewInit{
     this.WIDTH = window.innerWidth;
     this.windowHalfX = this.WIDTH / 2;
     this.windowHalfY = this.HEIGHT / 2;
+
+    console.log('handleWindowResize', this.WIDTH, this.HEIGHT );
+    console.log('this.renderer', this.renderer);
     this.renderer.setSize(this.WIDTH, this.HEIGHT);
     this.camera.aspect = this.WIDTH / this.HEIGHT;
     this.camera.updateProjectionMatrix();
   }
   
-
-
   private handleMouseDown(event:any) {
     if (this.gameStatus == "play") this.hero.jump();
     else if (this.gameStatus == "readyToReplay") {
@@ -455,9 +437,13 @@ export class GameComponent implements OnInit, AfterViewInit{
 
 
   private updateLevel() {
+
+    console.log('uupdateLevel');
     if (this.speed >= this.maxSpeed) return;
     this.level++;
     this.speed += 2;
+    console.log('this.speed:', this.speed);
+    
   }
 
   private replay() {
@@ -511,9 +497,7 @@ export class GameComponent implements OnInit, AfterViewInit{
 
 /*
 
-function removeParticle(p) {
-    p.visible = false;
-}
+
 
 
 

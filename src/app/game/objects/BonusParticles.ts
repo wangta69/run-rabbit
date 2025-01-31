@@ -1,23 +1,10 @@
 import * as THREE from 'three';
 import * as GSAP from 'gsap';
+import { pinkMat, greenMat } from './Constants';
 
 export class BonusParticles {
   private mesh = new THREE.Group();
   private parts: any[] = [];
-
-  private pinkMat = new THREE.MeshPhongMaterial({
-    color: 0xdc5f45,//0xb43b29,//0xff5b49,
-    shininess: 0,
-    flatShading: true,
-  // shading: THREE.FlatShading,
-  });
-
-  private greenMat = new THREE.MeshPhongMaterial({
-    color: 0x7abf8e,
-    shininess: 0,
-    flatShading: true,
-    // shading: THREE.FlatShading,
-  });
 
   constructor() {
     this.create();
@@ -29,13 +16,13 @@ export class BonusParticles {
     const smallParticleGeom = new THREE.BoxGeometry(5, 5, 5, 1);
     this.parts = [];
     for (let i = 0; i < 10; i++) {
-        const partPink = new THREE.Mesh(bigParticleGeom, this.pinkMat);
-        const partGreen = new THREE.Mesh(smallParticleGeom, this.greenMat);
-        partGreen.scale.set(.5, .5, .5);
-        this.parts.push(partPink);
-        this.parts.push(partGreen);
-        this.mesh.add(partPink);
-        this.mesh.add(partGreen);
+      const partPink = new THREE.Mesh(bigParticleGeom, pinkMat);
+      const partGreen = new THREE.Mesh(smallParticleGeom, greenMat);
+      partGreen.scale.set(.5, .5, .5);
+      this.parts.push(partPink);
+      this.parts.push(partGreen);
+      this.mesh.add(partPink);
+      this.mesh.add(partGreen);
     }
   }
 
@@ -51,7 +38,11 @@ export class BonusParticles {
       p.visible = true;
       const s = explosionSpeed + Math.random() * .5;
       GSAP.gsap.to(p.position, { duration: s, x: tx, y: ty, z: tz, ease: GSAP.Power4.easeOut });
-      // GSAP.gsap.to(p.scale, { duration: s, x: .01, y: .01, z: .01, ease: GSAP.Power4.easeOut, onComplete: this.removeParticle, onCompleteParams: [p] });
+      GSAP.gsap.to(p.scale, { duration: s, x: .01, y: .01, z: .01, ease: GSAP.Power4.easeOut, onComplete: this.removeParticle, onCompleteParams: [p] });
     }
+  }
+
+  private removeParticle(p: any) {
+    p.visible = false;
   }
 }

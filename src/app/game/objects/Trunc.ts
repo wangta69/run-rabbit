@@ -1,58 +1,21 @@
 import * as THREE from 'three';
+import { blackMat, brownMat, whiteMat, lightBrownMat, pinkMat, greenMat } from './Constants';
 
 export class Trunc {
 
   private mesh: any; // = new THREE.Mesh(geom, matTrunc)
-  private blackMat = new THREE.MeshPhongMaterial({
-    color: 0x100707,
-    flatShading: true,
-  // shading: THREE.FlatShading,
-  });
-  
-  private brownMat = new THREE.MeshPhongMaterial({
-    color: 0xb44b39,
-    shininess: 0,
-    flatShading: true,
-  // shading: THREE.FlatShading,
-  });
 
-  private whiteMat = new THREE.MeshPhongMaterial({
-    color: 0xa49789,
-    flatShading: true,
-  // shading: THREE.FlatShading,
-  });
 
-  private lightBrownMat = new THREE.MeshPhongMaterial({
-    color: 0xe07a57,
-    flatShading: true,
-  // shading: THREE.FlatShading,
-  });
-
-  private pinkMat = new THREE.MeshPhongMaterial({
-    color: 0xdc5f45,//0xb43b29,//0xff5b49,
-    shininess: 0,
-    flatShading: true,
-  // shading: THREE.FlatShading,
-  });
-
-  private greenMat = new THREE.MeshPhongMaterial({
-    color: 0x7abf8e,
-    shininess: 0,
-    flatShading: true,
-    // shading: THREE.FlatShading,
-  });
   constructor() {
     this.create();
   }
 
   private create() {
-
- 
     const truncHeight = 50 + Math.random() * 150;
     const topRadius = 1 + Math.random() * 5;
     const bottomRadius = 5 + Math.random() * 5;
-    const mats = [this.blackMat, this.brownMat, this.pinkMat, this.whiteMat, this.greenMat, this.lightBrownMat, this.pinkMat];
-    const matTrunc = this.blackMat;//mats[Math.floor(Math.random()*mats.length)];
+    const mats = [blackMat, brownMat, pinkMat, whiteMat, greenMat, lightBrownMat, pinkMat];
+    const matTrunc = blackMat;//mats[Math.floor(Math.random()*mats.length)];
     const nhSegments = 3;//Math.ceil(2 + Math.random()*6);
     const nvSegments = 3;//Math.ceil(2 + Math.random()*6);
     const geom = new THREE.CylinderGeometry(topRadius, bottomRadius, truncHeight, nhSegments, nvSegments);

@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import * as GSAP from 'gsap';
+import { blackMat, brownMat, whiteMat, lightBrownMat, pinkMat } from './Constants';
 
 export class Hero {
 
@@ -11,79 +12,51 @@ export class Hero {
   public mesh: any;
   private body: any;
 
-  private torsoGeom: any;
+  // private torsoGeom: any;
   private torso: any;
 
-  private pantsGeom: any;
+  // private pantsGeom: any;
   private pants: any;
 
-  private tailGeom: any;
+  // private tailGeom: any;
   private tail: any;
 
-  private headGeom: any;
+  // private headGeom: any;
   private head: any;
 
-  private cheekGeom: any;
+  // private cheekGeom: any;
   private cheekR: any;
   private cheekL: any;
 
-  private noseGeom: any;
+  // private noseGeom: any;
   private nose: any;
 
-  private mouthGeom: any;
+  // private mouthGeom: any;
   private mouth: any;
 
-  private pawFGeom: any;
+  // private pawFGeom: any;
   private pawFR: any;
 
   private pawFL: any;
 
-  private pawBGeom: any;
+  // private pawBGeom: any;
   private pawBL: any;
   private pawBR: any;
 
-  private earGeom: any;
+  // private earGeom: any;
   private earL: any;
   private earR: any;
 
-  private eyeGeom: any;
+  // private eyeGeom: any;
   private eyeL: any;
   private eyeR: any;
 
-  private irisGeom: any;
+  // private irisGeom: any;
   private iris: any;
-
-  private blackMat = new THREE.MeshPhongMaterial({
-    color: 0x100707,
-    flatShading: true,
-  // shading: THREE.FlatShading,
-  });
   
-  private brownMat = new THREE.MeshPhongMaterial({
-    color: 0xb44b39,
-    shininess: 0,
-    flatShading: true,
-  // shading: THREE.FlatShading,
-  });
 
-  private whiteMat = new THREE.MeshPhongMaterial({
-    color: 0xa49789,
-    flatShading: true,
-  // shading: THREE.FlatShading,
-  });
 
-  private lightBrownMat = new THREE.MeshPhongMaterial({
-    color: 0xe07a57,
-    flatShading: true,
-  // shading: THREE.FlatShading,
-  });
 
-  private pinkMat = new THREE.MeshPhongMaterial({
-    color: 0xdc5f45,//0xb43b29,//0xff5b49,
-    shininess: 0,
-    flatShading: true,
-  // shading: THREE.FlatShading,
-  });
 
   constructor(parent: any) { // parent: GameComponent
     // 클래스 프로퍼티의 선언과 초기화
@@ -104,14 +77,14 @@ export class Hero {
 
     // const torsoGeom = new THREE.BoxGeometry(7, 7, 10, 1);
     const torsoGeom = new THREE.BoxGeometry(7, 7, 10, 1);
-    this.torso = new THREE.Mesh(torsoGeom, this.brownMat);
+    this.torso = new THREE.Mesh(torsoGeom, brownMat);
     this.torso.position.z = 0;
     this.torso.position.y = 7;
     this.torso.castShadow = true;
     this.body.add(this.torso);
 
     const pantsGeom = new THREE.BoxGeometry(9, 9, 5, 1);
-    this.pants = new THREE.Mesh(pantsGeom, this.whiteMat);
+    this.pants = new THREE.Mesh(pantsGeom, whiteMat);
     this.pants.position.z = -3;
     this.pants.position.y = 0;
     this.pants.castShadow = true;
@@ -119,7 +92,7 @@ export class Hero {
 
     const tailGeom = new THREE.BoxGeometry(3, 3, 3, 1);
     tailGeom.applyMatrix4(new THREE.Matrix4().makeTranslation(0, 0, -2));
-    this.tail = new THREE.Mesh(tailGeom, this.lightBrownMat);
+    this.tail = new THREE.Mesh(tailGeom, lightBrownMat);
     this.tail.position.z = -4;
     this.tail.position.y = 5;
     this.tail.castShadow = true;
@@ -130,14 +103,14 @@ export class Hero {
     const headGeom = new THREE.BoxGeometry(10, 10, 13, 1);
 
     headGeom.applyMatrix4(new THREE.Matrix4().makeTranslation(0, 0, 7.5));
-    this.head = new THREE.Mesh(headGeom, this.brownMat);
+    this.head = new THREE.Mesh(headGeom, brownMat);
     this.head.position.z = 2;
     this.head.position.y = 11;
     this.head.castShadow = true;
     this.body.add(this.head);
 
     const cheekGeom = new THREE.BoxGeometry(1, 4, 4, 1);
-    this.cheekR = new THREE.Mesh(cheekGeom, this.pinkMat);
+    this.cheekR = new THREE.Mesh(cheekGeom, pinkMat);
     this.cheekR.position.x = -5;
     this.cheekR.position.z = 7;
     this.cheekR.position.y = -2.5;
@@ -150,7 +123,7 @@ export class Hero {
 
 
     const noseGeom = new THREE.BoxGeometry(6, 6, 3, 1);
-    this.nose = new THREE.Mesh(noseGeom, this.lightBrownMat);
+    this.nose = new THREE.Mesh(noseGeom, lightBrownMat);
     this.nose.position.z = 13.5;
     this.nose.position.y = 2.6;
     this.nose.castShadow = true;
@@ -159,7 +132,7 @@ export class Hero {
     const mouthGeom = new THREE.BoxGeometry(4, 2, 4, 1);
     mouthGeom.applyMatrix4(new THREE.Matrix4().makeTranslation(0, 0, 3));
     mouthGeom.applyMatrix4(new THREE.Matrix4().makeRotationX(Math.PI / 12));
-    this.mouth = new THREE.Mesh(mouthGeom, this.brownMat);
+    this.mouth = new THREE.Mesh(mouthGeom, brownMat);
     this.mouth.position.z = 8;
     this.mouth.position.y = -4;
     this.mouth.castShadow = true;
@@ -167,7 +140,7 @@ export class Hero {
 
 
     const pawFGeom = new THREE.BoxGeometry(3, 3, 3, 1);
-    this.pawFR = new THREE.Mesh(pawFGeom, this.lightBrownMat);
+    this.pawFR = new THREE.Mesh(pawFGeom, lightBrownMat);
     this.pawFR.position.x = -2;
     this.pawFR.position.z = 6;
     this.pawFR.position.y = 1.5;
@@ -180,7 +153,7 @@ export class Hero {
     this.body.add(this.pawFL);
 
     const pawBGeom = new THREE.BoxGeometry(3, 3, 6, 1);
-    this.pawBL = new THREE.Mesh(pawBGeom, this.lightBrownMat);
+    this.pawBL = new THREE.Mesh(pawBGeom, lightBrownMat);
     this.pawBL.position.y = 1.5;
     this.pawBL.position.z = 0;
     this.pawBL.position.x = 5;
@@ -210,7 +183,7 @@ export class Hero {
 
     earGeom.applyMatrix4(new THREE.Matrix4().makeTranslation(0, 9, 0));
 
-    this.earL = new THREE.Mesh(earGeom, this.brownMat);
+    this.earL = new THREE.Mesh(earGeom, brownMat);
     this.earL.position.x = 2;
     this.earL.position.z = 2.5;
     this.earL.position.y = 5;
@@ -226,7 +199,7 @@ export class Hero {
 
     const eyeGeom = new THREE.BoxGeometry(2, 4, 4);
 
-    this.eyeL = new THREE.Mesh(eyeGeom, this.whiteMat);
+    this.eyeL = new THREE.Mesh(eyeGeom, whiteMat);
     this.eyeL.position.x = 5;
     this.eyeL.position.z = 5.5;
     this.eyeL.position.y = 2.9;
@@ -235,7 +208,7 @@ export class Hero {
 
     const irisGeom = new THREE.BoxGeometry(.6, 2, 2);
 
-    this.iris = new THREE.Mesh(irisGeom, this.blackMat);
+    this.iris = new THREE.Mesh(irisGeom, blackMat);
     this.iris.position.x = 1.2;
     this.iris.position.y = 1;
     this.iris.position.z = 1;
@@ -256,7 +229,7 @@ export class Hero {
     });
   }
 
-  private hang() {
+  public hang() {
     const sp = 1;
     const ease = GSAP.Power4.easeOut;
 
