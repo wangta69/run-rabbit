@@ -1,8 +1,9 @@
 import * as THREE from 'three';
+import * as GSAP from 'gsap';
 
 export class Hero {
 
-  // private parent: GameComponent;
+  private parent: any;
 
 
   private status = '';
@@ -54,34 +55,39 @@ export class Hero {
 
   private blackMat = new THREE.MeshPhongMaterial({
     color: 0x100707,
+    flatShading: true,
   // shading: THREE.FlatShading,
   });
   
   private brownMat = new THREE.MeshPhongMaterial({
     color: 0xb44b39,
     shininess: 0,
+    flatShading: true,
   // shading: THREE.FlatShading,
   });
 
   private whiteMat = new THREE.MeshPhongMaterial({
     color: 0xa49789,
+    flatShading: true,
   // shading: THREE.FlatShading,
   });
 
   private lightBrownMat = new THREE.MeshPhongMaterial({
     color: 0xe07a57,
+    flatShading: true,
   // shading: THREE.FlatShading,
   });
 
   private pinkMat = new THREE.MeshPhongMaterial({
     color: 0xdc5f45,//0xb43b29,//0xff5b49,
     shininess: 0,
+    flatShading: true,
   // shading: THREE.FlatShading,
   });
 
-  constructor() { // parent: GameComponent
+  constructor(parent: any) { // parent: GameComponent
     // 클래스 프로퍼티의 선언과 초기화
-    // this.parent = parent;
+    this.parent = parent;
 
     this.create();
 
@@ -96,23 +102,23 @@ export class Hero {
     this.body = new THREE.Group();
     this.mesh.add(this.body);
 
-    // var torsoGeom = new THREE.BoxGeometry(7, 7, 10, 1);
-    var torsoGeom = new THREE.BoxGeometry(7, 7, 10, 1);
+    // const torsoGeom = new THREE.BoxGeometry(7, 7, 10, 1);
+    const torsoGeom = new THREE.BoxGeometry(7, 7, 10, 1);
     this.torso = new THREE.Mesh(torsoGeom, this.brownMat);
     this.torso.position.z = 0;
     this.torso.position.y = 7;
     this.torso.castShadow = true;
     this.body.add(this.torso);
 
-    var pantsGeom = new THREE.BoxGeometry(9, 9, 5, 1);
+    const pantsGeom = new THREE.BoxGeometry(9, 9, 5, 1);
     this.pants = new THREE.Mesh(pantsGeom, this.whiteMat);
     this.pants.position.z = -3;
     this.pants.position.y = 0;
     this.pants.castShadow = true;
     this.torso.add(this.pants);
 
-    var tailGeom = new THREE.BoxGeometry(3, 3, 3, 1);
-    // tailGeom.applyMatrix(new THREE.Matrix4().makeTranslation(0, 0, -2));
+    const tailGeom = new THREE.BoxGeometry(3, 3, 3, 1);
+    tailGeom.applyMatrix4(new THREE.Matrix4().makeTranslation(0, 0, -2));
     this.tail = new THREE.Mesh(tailGeom, this.lightBrownMat);
     this.tail.position.z = -4;
     this.tail.position.y = 5;
@@ -121,16 +127,16 @@ export class Hero {
 
     this.torso.rotation.x = -Math.PI / 8;
 
-    var headGeom = new THREE.BoxGeometry(10, 10, 13, 1);
+    const headGeom = new THREE.BoxGeometry(10, 10, 13, 1);
 
-    // headGeom.applyMatrix(new THREE.Matrix4().makeTranslation(0, 0, 7.5));
+    headGeom.applyMatrix4(new THREE.Matrix4().makeTranslation(0, 0, 7.5));
     this.head = new THREE.Mesh(headGeom, this.brownMat);
     this.head.position.z = 2;
     this.head.position.y = 11;
     this.head.castShadow = true;
     this.body.add(this.head);
 
-    var cheekGeom = new THREE.BoxGeometry(1, 4, 4, 1);
+    const cheekGeom = new THREE.BoxGeometry(1, 4, 4, 1);
     this.cheekR = new THREE.Mesh(cheekGeom, this.pinkMat);
     this.cheekR.position.x = -5;
     this.cheekR.position.z = 7;
@@ -143,16 +149,16 @@ export class Hero {
     this.head.add(this.cheekL);
 
 
-    var noseGeom = new THREE.BoxGeometry(6, 6, 3, 1);
+    const noseGeom = new THREE.BoxGeometry(6, 6, 3, 1);
     this.nose = new THREE.Mesh(noseGeom, this.lightBrownMat);
     this.nose.position.z = 13.5;
     this.nose.position.y = 2.6;
     this.nose.castShadow = true;
     this.head.add(this.nose);
 
-    var mouthGeom = new THREE.BoxGeometry(4, 2, 4, 1);
-    // mouthGeom.applyMatrix(new THREE.Matrix4().makeTranslation(0, 0, 3));
-    // mouthGeom.applyMatrix(new THREE.Matrix4().makeRotationX(Math.PI / 12));
+    const mouthGeom = new THREE.BoxGeometry(4, 2, 4, 1);
+    mouthGeom.applyMatrix4(new THREE.Matrix4().makeTranslation(0, 0, 3));
+    mouthGeom.applyMatrix4(new THREE.Matrix4().makeRotationX(Math.PI / 12));
     this.mouth = new THREE.Mesh(mouthGeom, this.brownMat);
     this.mouth.position.z = 8;
     this.mouth.position.y = -4;
@@ -160,7 +166,7 @@ export class Hero {
     this.head.add(this.mouth);
 
 
-    var pawFGeom = new THREE.BoxGeometry(3, 3, 3, 1);
+    const pawFGeom = new THREE.BoxGeometry(3, 3, 3, 1);
     this.pawFR = new THREE.Mesh(pawFGeom, this.lightBrownMat);
     this.pawFR.position.x = -2;
     this.pawFR.position.z = 6;
@@ -173,7 +179,7 @@ export class Hero {
     this.pawFL.castShadow = true;
     this.body.add(this.pawFL);
 
-    var pawBGeom = new THREE.BoxGeometry(3, 3, 6, 1);
+    const pawBGeom = new THREE.BoxGeometry(3, 3, 6, 1);
     this.pawBL = new THREE.Mesh(pawBGeom, this.lightBrownMat);
     this.pawBL.position.y = 1.5;
     this.pawBL.position.z = 0;
@@ -186,19 +192,23 @@ export class Hero {
     this.pawBR.castShadow = true;
     this.body.add(this.pawBR);
 
-    var earGeom = new THREE.BoxGeometry(7, 18, 2, 1);
-    // earGeom.vertices[6].x += 2;
-    // earGeom.vertices[6].z += .5;
+    const earGeom = new THREE.BoxGeometry(7, 18, 2, 1);
+    const positionAttribute = earGeom.getAttribute('position');
+    const vertex = new THREE.Vector3();
 
-    // earGeom.vertices[7].x += 2;
-    // earGeom.vertices[7].z -= .5;
+    vertex.fromBufferAttribute(positionAttribute, 6).x += 2;
+    vertex.fromBufferAttribute(positionAttribute, 6).z += .5;
 
-    // earGeom.vertices[2].x -= 2;
-    // earGeom.vertices[2].z -= .5;
+    vertex.fromBufferAttribute(positionAttribute, 7).x += 2;
+    vertex.fromBufferAttribute(positionAttribute, 7).z -= .5;
 
-    // earGeom.vertices[3].x -= 2;
-    // earGeom.vertices[3].z += .5;
-    // earGeom.applyMatrix(new THREE.Matrix4().makeTranslation(0, 9, 0));
+    vertex.fromBufferAttribute(positionAttribute, 2).x -= 2;
+    vertex.fromBufferAttribute(positionAttribute, 2).z -= .5;
+
+    vertex.fromBufferAttribute(positionAttribute, 3).x -= 2;
+    vertex.fromBufferAttribute(positionAttribute, 3).z += .5;
+
+    earGeom.applyMatrix4(new THREE.Matrix4().makeTranslation(0, 9, 0));
 
     this.earL = new THREE.Mesh(earGeom, this.brownMat);
     this.earL.position.x = 2;
@@ -214,7 +224,7 @@ export class Hero {
     this.earR.castShadow = true;
     this.head.add(this.earR);
 
-    var eyeGeom = new THREE.BoxGeometry(2, 4, 4);
+    const eyeGeom = new THREE.BoxGeometry(2, 4, 4);
 
     this.eyeL = new THREE.Mesh(eyeGeom, this.whiteMat);
     this.eyeL.position.x = 5;
@@ -223,7 +233,7 @@ export class Hero {
     this.eyeL.castShadow = true;
     this.head.add(this.eyeL);
 
-    var irisGeom = new THREE.BoxGeometry(.6, 2, 2);
+    const irisGeom = new THREE.BoxGeometry(.6, 2, 2);
 
     this.iris = new THREE.Mesh(irisGeom, this.blackMat);
     this.iris.position.x = 1.2;
@@ -247,96 +257,94 @@ export class Hero {
   }
 
   private hang() {
-    var _this = this;
-    var sp = 1;
-    // var ease = Power4.easeOut;
+    const sp = 1;
+    const ease = GSAP.Power4.easeOut;
 
-    // TweenMax.killTweensOf(this.eyeL.scale);
-    // TweenMax.killTweensOf(this.eyeR.scale);
+    GSAP.gsap.killTweensOf(this.eyeL.scale);
+    GSAP.gsap.killTweensOf(this.eyeR.scale);
 
     this.body.rotation.x = 0;
     this.torso.rotation.x = 0;
     this.body.position.y = 0;
     this.torso.position.y = 7;
 
-    // TweenMax.to(this.mesh.rotation, sp, { y: 0, ease: ease });
-    // TweenMax.to(this.mesh.position, sp, { y: -7, z: 6, ease: ease });
-    // TweenMax.to(this.head.rotation, sp, { x: Math.PI / 6, ease: ease, onComplete: function () { _this.nod(); } });
+    GSAP.gsap.to(this.mesh.rotation, { duration: sp, y: 0, ease: ease });
+    GSAP.gsap.to(this.mesh.position, { duration: sp, y: -7, z: 6, ease: ease });
+    GSAP.gsap.to(this.head.rotation, { duration: sp, x: Math.PI / 6, ease: ease, onComplete: () => { this.nod(); } });
 
-    // TweenMax.to(this.earL.rotation, sp, { x: Math.PI / 3, ease: ease });
-    // TweenMax.to(this.earR.rotation, sp, { x: Math.PI / 3, ease: ease });
+    GSAP.gsap.to(this.earL.rotation, { duration: sp, x: Math.PI / 3, ease: ease });
+    GSAP.gsap.to(this.earR.rotation, { duration: sp, x: Math.PI / 3, ease: ease });
 
-    // TweenMax.to(this.pawFL.position, sp, { y: -1, z: 3, ease: ease });
-    // TweenMax.to(this.pawFR.position, sp, { y: -1, z: 3, ease: ease });
-    // TweenMax.to(this.pawBL.position, sp, { y: -2, z: -3, ease: ease });
-    // TweenMax.to(this.pawBR.position, sp, { y: -2, z: -3, ease: ease });
+    GSAP.gsap.to(this.pawFL.position, { duration: sp, y: -1, z: 3, ease: ease });
+    GSAP.gsap.to(this.pawFR.position, { duration: sp, y: -1, z: 3, ease: ease });
+    GSAP.gsap.to(this.pawBL.position, { duration: sp, y: -2, z: -3, ease: ease });
+    GSAP.gsap.to(this.pawBR.position, { duration: sp, y: -2, z: -3, ease: ease });
 
-    // TweenMax.to(this.eyeL.scale, sp, { y: 1, ease: ease });
-    // TweenMax.to(this.eyeR.scale, sp, { y: 1, ease: ease });
+    GSAP.gsap.to(this.eyeL.scale, { duration: sp, y: 1, ease: ease });
+    GSAP.gsap.to(this.eyeR.scale, { duration: sp, y: 1, ease: ease });
   }
 
   private nod() {
-    var _this = this;
-    var sp = .5 + Math.random();
+    const sp = .5 + Math.random();
 
     // HEAD
-    var tHeadRotY = -Math.PI / 6 + Math.random() * Math.PI / 3;
-    // TweenMax.to(this.head.rotation, sp, { y: tHeadRotY, ease: Power4.easeInOut, onComplete: function () { _this.nod() } });
+    const tHeadRotY = -Math.PI / 6 + Math.random() * Math.PI / 3;
+    GSAP.gsap.to(this.head.rotation, { duration: sp, y: tHeadRotY, ease: GSAP.Power4.easeInOut, onComplete: () => { this.nod() } });
 
-    // // EARS
-    // var tEarLRotX = Math.PI / 4 + Math.random() * Math.PI / 6;
-    // var tEarRRotX = Math.PI / 4 + Math.random() * Math.PI / 6;
+    // EARS
+    const tEarLRotX = Math.PI / 4 + Math.random() * Math.PI / 6;
+    const tEarRRotX = Math.PI / 4 + Math.random() * Math.PI / 6;
 
-    // TweenMax.to(this.earL.rotation, sp, { x: tEarLRotX, ease: Power4.easeInOut });
-    // TweenMax.to(this.earR.rotation, sp, { x: tEarRRotX, ease: Power4.easeInOut });
-
-
-    // // PAWS BACK LEFT
-
-    // var tPawBLRot = Math.random() * Math.PI / 2;
-    // var tPawBLY = -4 + Math.random() * 8;
-
-    // TweenMax.to(this.pawBL.rotation, sp / 2, { x: tPawBLRot, ease: Power1.easeInOut, yoyo: true, repeat: 2 });
-    // TweenMax.to(this.pawBL.position, sp / 2, { y: tPawBLY, ease: Power1.easeInOut, yoyo: true, repeat: 2 });
+    GSAP.gsap.to(this.earL.rotation, { duration: sp, x: tEarLRotX, ease: GSAP.Power4.easeInOut });
+    GSAP.gsap.to(this.earR.rotation, { duration: sp, x: tEarRRotX, ease: GSAP.Power4.easeInOut });
 
 
-    // // PAWS BACK RIGHT
+    // PAWS BACK LEFT
 
-    // var tPawBRRot = Math.random() * Math.PI / 2;
-    // var tPawBRY = -4 + Math.random() * 8;
-    // TweenMax.to(this.pawBR.rotation, sp / 2, { x: tPawBRRot, ease: Power1.easeInOut, yoyo: true, repeat: 2 });
-    // TweenMax.to(this.pawBR.position, sp / 2, { y: tPawBRY, ease: Power1.easeInOut, yoyo: true, repeat: 2 });
+    const tPawBLRot = Math.random() * Math.PI / 2;
+    const tPawBLY = -4 + Math.random() * 8;
 
-    // // PAWS FRONT LEFT
+    GSAP.gsap.to(this.pawBL.rotation, { duration: sp / 2, x: tPawBLRot, ease: GSAP.Power1.easeInOut, yoyo: true, repeat: 2 });
+    GSAP.gsap.to(this.pawBL.position, { duration: sp / 2, y: tPawBLY, ease: GSAP.Power1.easeInOut, yoyo: true, repeat: 2 });
 
-    // var tPawFLRot = Math.random() * Math.PI / 2;
-    // var tPawFLY = -4 + Math.random() * 8;
 
-    // TweenMax.to(this.pawFL.rotation, sp / 2, { x: tPawFLRot, ease: Power1.easeInOut, yoyo: true, repeat: 2 });
+    // PAWS BACK RIGHT
 
-    // TweenMax.to(this.pawFL.position, sp / 2, { y: tPawFLY, ease: Power1.easeInOut, yoyo: true, repeat: 2 });
+    const tPawBRRot = Math.random() * Math.PI / 2;
+    const tPawBRY = -4 + Math.random() * 8;
+    GSAP.gsap.to(this.pawBR.rotation, { duration: sp / 2, x: tPawBRRot, ease: GSAP.Power1.easeInOut, yoyo: true, repeat: 2 });
+    GSAP.gsap.to(this.pawBR.position, { duration: sp / 2, y: tPawBRY, ease: GSAP.Power1.easeInOut, yoyo: true, repeat: 2 });
 
-    // // PAWS FRONT RIGHT
+    // PAWS FRONT LEFT
 
-    // var tPawFRRot = Math.random() * Math.PI / 2;
-    // var tPawFRY = -4 + Math.random() * 8;
+    const tPawFLRot = Math.random() * Math.PI / 2;
+    const tPawFLY = -4 + Math.random() * 8;
 
-    // TweenMax.to(this.pawFR.rotation, sp / 2, { x: tPawFRRot, ease: Power1.easeInOut, yoyo: true, repeat: 2 });
+    GSAP.gsap.to(this.pawFL.rotation, { duration: sp / 2, x: tPawFLRot, ease: GSAP.Power1.easeInOut, yoyo: true, repeat: 2 });
 
-    // TweenMax.to(this.pawFR.position, sp / 2, { y: tPawFRY, ease: Power1.easeInOut, yoyo: true, repeat: 2 });
+    GSAP.gsap.to(this.pawFL.position, { duration: sp / 2, y: tPawFLY, ease: GSAP.Power1.easeInOut, yoyo: true, repeat: 2 });
 
-    // // MOUTH
-    // var tMouthRot = Math.random() * Math.PI / 8;
-    // TweenMax.to(this.mouth.rotation, sp, { x: tMouthRot, ease: Power1.easeInOut });
-    // // IRIS
-    // var tIrisY = -1 + Math.random() * 2;
-    // var tIrisZ = -1 + Math.random() * 2;
-    // var iris1 = this.iris;
-    // var iris2 = this.eyeR.children[0];
-    // TweenMax.to([iris1.position, iris2.position], sp, { y: tIrisY, z: tIrisZ, ease: Power1.easeInOut });
+    // PAWS FRONT RIGHT
 
-    // //EYES
-    // if (Math.random() > .2) TweenMax.to([this.eyeR.scale, this.eyeL.scale], sp / 8, { y: 0, ease: Power1.easeInOut, yoyo: true, repeat: 1 });
+    const tPawFRRot = Math.random() * Math.PI / 2;
+    const tPawFRY = -4 + Math.random() * 8;
+
+    GSAP.gsap.to(this.pawFR.rotation, { duration: sp / 2, x: tPawFRRot, ease: GSAP.Power1.easeInOut, yoyo: true, repeat: 2 });
+
+    GSAP.gsap.to(this.pawFR.position, { duration: sp / 2, y: tPawFRY, ease: GSAP.Power1.easeInOut, yoyo: true, repeat: 2 });
+
+    // MOUTH
+    const tMouthRot = Math.random() * Math.PI / 8;
+    GSAP.gsap.to(this.mouth.rotation, { duration: sp, x: tMouthRot, ease: GSAP.Power1.easeInOut });
+    // IRIS
+    const tIrisY = -1 + Math.random() * 2;
+    const tIrisZ = -1 + Math.random() * 2;
+    const iris1 = this.iris;
+    const iris2 = this.eyeR.children[0];
+    GSAP.gsap.to([iris1.position, iris2.position], { duration: sp, y: tIrisY, z: tIrisZ, ease: GSAP.Power1.easeInOut });
+
+    //EYES
+    if (Math.random() > .2) GSAP.gsap.to([this.eyeR.scale, this.eyeL.scale], { duration: sp / 8, y: 0, ease: GSAP.Power1.easeInOut, yoyo: true, repeat: 1 });
 
   }
 
@@ -344,69 +352,69 @@ export class Hero {
   private run () {
     this.status = "running";
 
-    // var s = Math.min(speed, maxSpeed);
+    const s = Math.min(this.parent.speed, this.parent.maxSpeed);
 
-    // this.runningCycle += delta * s * .7;
-    // this.runningCycle = this.runningCycle % (Math.PI * 2);
-    // var t = this.runningCycle;
+    this.runningCycle += this.parent.delta * s * .7;
+    this.runningCycle = this.runningCycle % (Math.PI * 2);
+    const t = this.runningCycle;
 
-    // var amp = 4;
-    // var disp = .2;
+    const amp = 4;
+    const disp = .2;
 
-    // // BODY
+    // BODY
 
-    // this.body.position.y = 6 + Math.sin(t - Math.PI / 2) * amp;
-    // this.body.rotation.x = .2 + Math.sin(t - Math.PI / 2) * amp * .1;
+    this.body.position.y = 6 + Math.sin(t - Math.PI / 2) * amp;
+    this.body.rotation.x = .2 + Math.sin(t - Math.PI / 2) * amp * .1;
 
-    // this.torso.rotation.x = Math.sin(t - Math.PI / 2) * amp * .1;
-    // this.torso.position.y = 7 + Math.sin(t - Math.PI / 2) * amp * .5;
+    this.torso.rotation.x = Math.sin(t - Math.PI / 2) * amp * .1;
+    this.torso.position.y = 7 + Math.sin(t - Math.PI / 2) * amp * .5;
 
-    // // MOUTH
-    // this.mouth.rotation.x = Math.PI / 16 + Math.cos(t) * amp * .05;
+    // MOUTH
+    this.mouth.rotation.x = Math.PI / 16 + Math.cos(t) * amp * .05;
 
-    // // HEAD
-    // this.head.position.z = 2 + Math.sin(t - Math.PI / 2) * amp * .5;
-    // this.head.position.y = 8 + Math.cos(t - Math.PI / 2) * amp * .7;
-    // this.head.rotation.x = -.2 + Math.sin(t + Math.PI) * amp * .1;
+    // HEAD
+    this.head.position.z = 2 + Math.sin(t - Math.PI / 2) * amp * .5;
+    this.head.position.y = 8 + Math.cos(t - Math.PI / 2) * amp * .7;
+    this.head.rotation.x = -.2 + Math.sin(t + Math.PI) * amp * .1;
 
-    // // EARS
-    // this.earL.rotation.x = Math.cos(-Math.PI / 2 + t) * (amp * .2);
-    // this.earR.rotation.x = Math.cos(-Math.PI / 2 + .2 + t) * (amp * .3);
+    // EARS
+    this.earL.rotation.x = Math.cos(-Math.PI / 2 + t) * (amp * .2);
+    this.earR.rotation.x = Math.cos(-Math.PI / 2 + .2 + t) * (amp * .3);
 
-    // // EYES
-    // this.eyeR.scale.y = this.eyeL.scale.y = .7 + Math.abs(Math.cos(-Math.PI / 4 + t * .5)) * .6;
+    // EYES
+    this.eyeR.scale.y = this.eyeL.scale.y = .7 + Math.abs(Math.cos(-Math.PI / 4 + t * .5)) * .6;
 
-    // // TAIL
-    // this.tail.rotation.x = Math.cos(Math.PI / 2 + t) * amp * .3;
+    // TAIL
+    this.tail.rotation.x = Math.cos(Math.PI / 2 + t) * amp * .3;
 
-    // // FRONT RIGHT PAW
-    // this.pawFR.position.y = 1.5 + Math.sin(t) * amp;
-    // this.pawFR.rotation.x = Math.cos(t) * Math.PI / 4;
-
-
-    // this.pawFR.position.z = 6 - Math.cos(t) * amp * 2;
-
-    // // FRONT LEFT PAW
-
-    // this.pawFL.position.y = 1.5 + Math.sin(disp + t) * amp;
-    // this.pawFL.rotation.x = Math.cos(t) * Math.PI / 4;
+    // FRONT RIGHT PAW
+    this.pawFR.position.y = 1.5 + Math.sin(t) * amp;
+    this.pawFR.rotation.x = Math.cos(t) * Math.PI / 4;
 
 
-    // this.pawFL.position.z = 6 - Math.cos(disp + t) * amp * 2;
+    this.pawFR.position.z = 6 - Math.cos(t) * amp * 2;
 
-    // // BACK RIGHT PAW
-    // this.pawBR.position.y = 1.5 + Math.sin(Math.PI + t) * amp;
-    // this.pawBR.rotation.x = Math.cos(t + Math.PI * 1.5) * Math.PI / 3;
+    // FRONT LEFT PAW
 
-
-    // this.pawBR.position.z = - Math.cos(Math.PI + t) * amp;
-
-    // // BACK LEFT PAW
-    // this.pawBL.position.y = 1.5 + Math.sin(Math.PI + t) * amp;
-    // this.pawBL.rotation.x = Math.cos(t + Math.PI * 1.5) * Math.PI / 3;
+    this.pawFL.position.y = 1.5 + Math.sin(disp + t) * amp;
+    this.pawFL.rotation.x = Math.cos(t) * Math.PI / 4;
 
 
-    // this.pawBL.position.z = - Math.cos(Math.PI + t) * amp;
+    this.pawFL.position.z = 6 - Math.cos(disp + t) * amp * 2;
+
+    // BACK RIGHT PAW
+    this.pawBR.position.y = 1.5 + Math.sin(Math.PI + t) * amp;
+    this.pawBR.rotation.x = Math.cos(t + Math.PI * 1.5) * Math.PI / 3;
+
+
+    this.pawBR.position.z = - Math.cos(Math.PI + t) * amp;
+
+    // BACK LEFT PAW
+    this.pawBL.position.y = 1.5 + Math.sin(Math.PI + t) * amp;
+    this.pawBL.rotation.x = Math.cos(t + Math.PI * 1.5) * Math.PI / 3;
+
+
+    this.pawBL.position.z = - Math.cos(Math.PI + t) * amp;
 
 
 }
@@ -414,35 +422,31 @@ export class Hero {
 private jump() {
     if (this.status == "jumping") return;
     this.status = "jumping";
-    /*
-    var _this = this;
-    var totalSpeed = 10 / speed;
-    var jumpHeight = 45;
 
-    TweenMax.to(this.earL.rotation, totalSpeed, { x: "+=.3", ease: Back.easeOut });
-    TweenMax.to(this.earR.rotation, totalSpeed, { x: "-=.3", ease: Back.easeOut });
 
-    TweenMax.to(this.pawFL.rotation, totalSpeed, { x: "+=.7", ease: Back.easeOut });
-    TweenMax.to(this.pawFR.rotation, totalSpeed, { x: "-=.7", ease: Back.easeOut });
-    TweenMax.to(this.pawBL.rotation, totalSpeed, { x: "+=.7", ease: Back.easeOut });
-    TweenMax.to(this.pawBR.rotation, totalSpeed, { x: "-=.7", ease: Back.easeOut });
+    const totalSpeed = 10 / this.parent.speed;
+    const jumpHeight = 45;
 
-    TweenMax.to(this.tail.rotation, totalSpeed, { x: "+=1", ease: Back.easeOut });
+    GSAP.gsap.to(this.earL.rotation, { duration: totalSpeed, x: "+=.3", ease: GSAP.Back.easeOut });
+    GSAP.gsap.to(this.earR.rotation, { duration: totalSpeed, x: "-=.3", ease: GSAP.Back.easeOut });
 
-    TweenMax.to(this.mouth.rotation, totalSpeed, { x: .5, ease: Back.easeOut });
+    GSAP.gsap.to(this.pawFL.rotation, { duration: totalSpeed, x: "+=.7", ease: GSAP.Back.easeOut });
+    GSAP.gsap.to(this.pawFR.rotation, { duration: totalSpeed, x: "-=.7", ease: GSAP.Back.easeOut });
+    GSAP.gsap.to(this.pawBL.rotation, { duration: totalSpeed, x: "+=.7", ease: GSAP.Back.easeOut });
+    GSAP.gsap.to(this.pawBR.rotation, { duration: totalSpeed, x: "-=.7", ease: GSAP.Back.easeOut });
 
-    TweenMax.to(this.mesh.position, totalSpeed / 2, { y: jumpHeight, ease: Power2.easeOut });
-    TweenMax.to(this.mesh.position, totalSpeed / 2, {
-        y: 0, ease: Power4.easeIn, delay: totalSpeed / 2, onComplete: function () {
-            //t = 0;
-            _this.status = "running";
-        }
+    GSAP.gsap.to(this.tail.rotation, { duration: totalSpeed, x: "+=1", ease: GSAP.Back.easeOut });
+
+    GSAP.gsap.to(this.mouth.rotation, { duration: totalSpeed, x: .5, ease: GSAP.Back.easeOut });
+
+    GSAP.gsap.to(this.mesh.position, { duration: totalSpeed / 2, y: jumpHeight, ease: GSAP.Power2.easeOut });
+    GSAP.gsap.to(this.mesh.position, {
+      duration: totalSpeed / 2, 
+      y: 0, ease: GSAP.Power4.easeIn, delay: totalSpeed / 2, onComplete: () => {
+          //t = 0;
+        this.status = "running";
+      }
     });
-    */
 
   }
-
-
-
-
 }

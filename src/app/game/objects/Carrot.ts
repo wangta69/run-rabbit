@@ -23,12 +23,14 @@ export class Carrot {
   private pinkMat = new THREE.MeshPhongMaterial({
     color: 0xdc5f45,//0xb43b29,//0xff5b49,
     shininess: 0,
+    flatShading: true,
   // shading: THREE.FlatShading,
   });
 
   private greenMat = new THREE.MeshPhongMaterial({
     color: 0x7abf8e,
     shininess: 0,
+    flatShading: true,
     // shading: THREE.FlatShading,
   });
   constructor() {
@@ -40,18 +42,24 @@ export class Carrot {
     this.angle = 0;
     this.mesh = new THREE.Group();
 
-    var bodyGeom = new THREE.CylinderGeometry(5, 3, 10, 4, 1);
-    // bodyGeom.vertices[8].y += 2;
-    // bodyGeom.vertices[9].y -= 3;
+    const bodyGeom = new THREE.CylinderGeometry(5, 3, 10, 4, 1);
+    const bodyGeompositionAttribute = bodyGeom.getAttribute('position');
+    const bodyGeomVertex = new THREE.Vector3();
+    bodyGeomVertex.fromBufferAttribute(bodyGeompositionAttribute, 8).y += 2;
+    bodyGeomVertex.fromBufferAttribute(bodyGeompositionAttribute, 9).y -= 3;
+
 
     this.body = new THREE.Mesh(bodyGeom, this.pinkMat);
 
-    var leafGeom = new THREE.BoxGeometry(5, 10, 1, 1);
-    // leafGeom.applyMatrix(new THREE.Matrix4().makeTranslation(0, 5, 0));
-    // leafGeom.vertices[2].x -= 1;
-    // leafGeom.vertices[3].x -= 1;
-    // leafGeom.vertices[6].x += 1;
-    // leafGeom.vertices[7].x += 1;
+    const leafGeom = new THREE.BoxGeometry(5, 10, 1, 1);
+    const positionAttribute = leafGeom.getAttribute('position');
+    const vertex = new THREE.Vector3();
+
+    leafGeom.applyMatrix4(new THREE.Matrix4().makeTranslation(0, 5, 0));
+    vertex.fromBufferAttribute(positionAttribute, 2).x -= 1;
+    vertex.fromBufferAttribute(positionAttribute, 3).x -= 1;
+    vertex.fromBufferAttribute(positionAttribute, 6).x -= 1;
+    vertex.fromBufferAttribute(positionAttribute, 7).x -= 1;
 
     this.leaf1 = new THREE.Mesh(leafGeom, this.greenMat);
     this.leaf1.position.y = 7;
